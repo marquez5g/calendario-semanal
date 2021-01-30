@@ -13,29 +13,8 @@ export const INITIAL_EVENTS = [{
   }
 ]
 export const TURNO_MORNING = [];
-export const TURNO_TARDE = [{
-    id: createEventId(),
-    title: 'All-day event',
-    start: todayStr
-  },
-  {
-    id: createEventId(),
-    title: 'Timed event',
-    start: todayStr + 'T12:00:00'
-  }
-]
-
-export const TURNO_NOCHE = [{
-    id: createEventId(),
-    title: 'All-day event',
-    start: todayStr
-  },
-  {
-    id: createEventId(),
-    title: 'Timed event',
-    start: todayStr + 'T12:00:00'
-  }
-]
+export const TURNO_TARDE = []
+export const TURNO_NOCHE = []
 
 export function createEventId() {
   return String(eventGuid++)

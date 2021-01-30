@@ -2,15 +2,26 @@
   <div class="demo-app">
     <div class="botones">
       <div class="predeterminados">
+        
+
         <label class="label-botones">Horarios predeterminados: </label>
         <button @click="morning">Mañana</button>
-        <button @click="current">Tarde</button>
-        <button @click="morning">Noche</button>
+        <button @click="tarde">Tarde</button>
+        <button @click="noche">Noche</button>
       </div>
 
-      <div class="tipo-horario">
-        <label class="label-botones">Tipo de horario: </label>
-        <button @click="libre">Libre</button>
+      <div class="toggle">
+        ¿Personalizar?
+
+        <label class="switch">
+          <input type="checkbox" v-on:click="isHidden = !isHidden" />
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="tipo-horario" v-if="!isHidden">
+        <label class="label-botones">Disponibilidad: </label>
+
+        <button @click="libre">Disponible</button>
         <button @click="permiso">Permiso</button>
         <button @click="vacaciones">Vacaciones</button>
       </div>
@@ -48,6 +59,7 @@ export default {
 
   data: function () {
     return {
+      isHidden: true,
       calendarOptions: {
         plugins: [
           dayGridPlugin,
@@ -83,11 +95,6 @@ export default {
   },
 
   methods: {
-    current() {
-      var date = calendarApi.getStart();
-      alert("The current date of the calendar is " + date.toISOString());
-    },
-
     morning() {
       let calendarApi = this.$refs.fullCalendar.getApi();
       let view = calendarApi.view;
@@ -97,17 +104,92 @@ export default {
         year: "numeric",
         day: "2-digit",
       });
+      let fechaLunesArray = fechaLunesFormatted.split("/");
+      let year = fechaLunesArray[2];
+      let month = fechaLunesArray[0];
 
       for (let i = 0; i < 5; i++) {
-        let fehcaLunesArray = fechaLunesFormatted.split("/");
-        let year = fehcaLunesArray[2];
-        let month = fehcaLunesArray[0];
-        let day = parseInt(fehcaLunesArray[1]) + i;
+        let day = parseInt(fechaLunesArray[1]) + i;
+        let formattedDay = day.toLocaleString("es-CO", {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        });
+        TURNO_MORNING.push({
+          id: createEventId(),
+          title: "Disponible",
+          start:
+            year + "-" + month + "-" + formattedDay.toString() + "T07:00:00",
+          end: year + "-" + month + "-" + formattedDay.toString() + "T16:00:00",
+          backgroundColor: "#4dffb8",
+          borderColor: "#4dffb8",
+          textColor: "black",
+        });
+      }
+
+      for (let i = 0; i < TURNO_MORNING.length; i++) {
+        calendarApi.addEvent(TURNO_MORNING[i]);
+      }
+    },
+    tarde() {
+      let calendarApi = this.$refs.fullCalendar.getApi();
+      let view = calendarApi.view;
+      let fechaLunes = view.currentStart;
+      let fechaLunesFormatted = formatDate(fechaLunes, {
+        month: "2-digit",
+        year: "numeric",
+        day: "2-digit",
+      });
+      let fechaLunesArray = fechaLunesFormatted.split("/");
+      let year = fechaLunesArray[2];
+      let month = fechaLunesArray[0];
+
+      for (let i = 0; i < 5; i++) {
+        let day = parseInt(fechaLunesArray[1]) + i;
+        let formattedDay = day.toLocaleString("es-CO", {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        });
         TURNO_MORNING.push({
           id: createEventId(),
           title: "Libre",
-          start: year + "-" + month + "-" + day.toString() + "T07:00:00",
-          end: year + "-" + month + "-" + day.toString() + "T16:00:00",
+          start:
+            year + "-" + month + "-" + formattedDay.toString() + "T11:00:00",
+          end: year + "-" + month + "-" + formattedDay.toString() + "T20:00:00",
+          backgroundColor: "#4dffb8",
+          borderColor: "#4dffb8",
+          textColor: "black",
+        });
+      }
+
+      for (let i = 0; i < TURNO_MORNING.length; i++) {
+        calendarApi.addEvent(TURNO_MORNING[i]);
+      }
+    },
+    noche() {
+      let calendarApi = this.$refs.fullCalendar.getApi();
+      let view = calendarApi.view;
+      let fechaLunes = view.currentStart;
+      let fechaLunesFormatted = formatDate(fechaLunes, {
+        month: "2-digit",
+        year: "numeric",
+        day: "2-digit",
+      });
+      let fechaLunesArray = fechaLunesFormatted.split("/");
+      let year = fechaLunesArray[2];
+      let month = fechaLunesArray[0];
+
+      for (let i = 0; i < 5; i++) {
+        let day = parseInt(fechaLunesArray[1]) + i;
+        let formattedDay = day.toLocaleString("es-CO", {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        });
+        TURNO_MORNING.push({
+          id: createEventId(),
+          title: "Libre",
+          start:
+            year + "-" + month + "-" + formattedDay.toString() + "T14:00:00",
+          end: year + "-" + month + "-" + formattedDay.toString() + "T23:00:00",
           backgroundColor: "#4dffb8",
           borderColor: "#4dffb8",
           textColor: "black",
@@ -156,7 +238,7 @@ export default {
     handleEventClick(clickInfo) {
       if (
         confirm(
-          `Are you sure you want to delete the event '${clickInfo.event.title}'`
+          `¿Seguro que quieres borrar el turno '${clickInfo.event.start}'?`
         )
       ) {
         clickInfo.event.remove();
@@ -232,7 +314,7 @@ b {
   border-top: 100px;
   margin: 5px 100px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  height: 950px;
+  height: 1000px;
 }
 
 .demo-app-main {
@@ -240,10 +322,10 @@ b {
   padding: 3em;
   border-radius: 25px;
   background: #ffffff;
+  border-top: 100px;
   border-bottom: 100px;
-  margin: 25px 100px;
+  margin: 70px 100px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  opacity: 100%;
 }
 .demo-app button {
   display: inline-block;
@@ -281,9 +363,85 @@ b {
   margin: 10px 100px;
 }
 .predeterminados {
-  padding: 10px;
+  padding: 15px;
+  text-align: left;
+  width: 65%;
+  margin: auto;
+}
+.tipo-horario {
+  padding: 15px 15px;
+  text-align: left;
+  width: 65%;
+  margin: auto;
 }
 .predeterminados label {
   left: 0%;
 }
+.toggle {
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  font-size: 115%;
+  text-transform: uppercase;
+  text-align: left;
+  width: 65%;
+  margin: auto;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2c3e50;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2c3e50;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(22px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
 </style>
