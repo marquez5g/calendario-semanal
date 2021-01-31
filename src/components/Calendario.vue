@@ -4,7 +4,9 @@
       <button @click="enviarHorario">Enviar horario</button>
     </div>
     <!-- Trigger/Open The Modal -->
-    <button id="myBtn" @click="tutorialOpen" class="boton-tutorial">Tutorial</button>
+    <button id="myBtn" @click="tutorialOpen" class="boton-tutorial">
+      Tutorial
+    </button>
 
     <!-- The Modal -->
     <div id="myModal" class="modal">
@@ -15,26 +17,43 @@
           <h2>Instrucciones</h2>
         </div>
         <div class="modal-body">
-          <p>Ingrese una semana completa haciendo uso de los turnos predeterminados:</p>
-         
+          <p>
+            Ingrese una semana completa haciendo uso de los turnos
+            predeterminados:
+          </p>
+
           <ul>
-            <li>Mañana: ingresa disponibilidad de 7 AM a 11 AM de lunes a viernes.</li>
-            <li>Tarde: ingresa disponibilidad de 11 AM a 8 PM de lunes a viernes.</li>
-            <li>Noche: ingresa disponibilidad de 2 PM a 11 PM de lunes a viernes.</li>
+            <li>
+              Mañana: ingresa disponibilidad de 7 AM a 11 AM de lunes a viernes.
+            </li>
+            <li>
+              Tarde: ingresa disponibilidad de 11 AM a 8 PM de lunes a viernes.
+            </li>
+            <li>
+              Noche: ingresa disponibilidad de 2 PM a 11 PM de lunes a viernes.
+            </li>
           </ul>
-          
-          <p>Active las opciones manuales para indicar permisos o vacaciones.</p>
-           
-           <ul>
-            <li>Seleccione el tipo de horario que desea ingresar haciendo clic en uno de los botones 
-              (DISPONIBLE, PERMISO, VACACIONES).</li>
-            <li>Haga clic y arrastre el mouse para pintar un día con un horario específico.</li>
+
+          <p>
+            Active las opciones manuales para indicar permisos o vacaciones.
+          </p>
+
+          <ul>
+            <li>
+              Seleccione el tipo de horario que desea ingresar haciendo clic en
+              uno de los botones (DISPONIBLE, PERMISO, VACACIONES).
+            </li>
+            <li>
+              Haga clic y arrastre el mouse para pintar un día con un horario
+              específico.
+            </li>
           </ul>
           <p>Para borrar, haga clic sobre un turno creado.</p>
-          
-          <p>Al terminar de ingresar los turnos, haga clic en ENVIAR HORARIO.</p>
+
+          <p>
+            Al terminar de ingresar los turnos, haga clic en ENVIAR HORARIO.
+          </p>
         </div>
-        
       </div>
     </div>
     <div class="predeterminados">
@@ -303,7 +322,7 @@ export default {
 <style lang="css">
 body {
   font-family: "Courier New", Courier, monospace;
-  background: #494D5F;
+  background: #494d5f;
 }
 
 h1,
@@ -371,23 +390,23 @@ b {
   color: black;
   padding: 3em;
   border-radius: 25px;
-  background: #e5eaf5;
+  background: white;
   border-top: 100px;
   border-bottom: 100px;
   box-shadow: 0 8px 15px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .fc .fc-button-primary {
-  background-color: #8458B3;
+  background-color: #8458b3;
   color: #fff;
-  border-color: #8458B3;
+  border-color: #8458b3;
 }
 .fc .fc-button-primary:hover {
   background-color: #2e2936;
   color: #fff;
   border-color: #2e2936;
 }
-.fc .fc-button-primary:disabled{
+.fc .fc-button-primary:disabled {
   background-color: #2e2936;
   color: #fff;
   border-color: #2e2936;
@@ -401,7 +420,7 @@ b {
   text-decoration: none;
   outline: none;
   color: white;
-  background-color: #8458B3;
+  background-color: #8458b3;
   border: none;
   border-radius: 8px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -442,6 +461,8 @@ b {
   margin-left: 250px;
   top: 0;
   color: white;
+  position: sticky;
+  z-index: 1;
 }
 .predeterminados label {
   left: 0%;
@@ -495,11 +516,11 @@ b {
 }
 
 input:checked + .slider {
-  background-color: #8458B3;
+  background-color: #8458b3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #8458B3;
+  box-shadow: 0 0 1px #8458b3;
 }
 
 input:checked + .slider:before {
@@ -525,7 +546,7 @@ input:checked + .slider:before {
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-   /* Enable scroll if needed */
+  /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
@@ -544,20 +565,19 @@ input:checked + .slider:before {
   position: fixed;
   left: 23%;
   bottom: -15%;
-  
 }
-.modal-content h2{
+.modal-content h2 {
   text-align: center;
   text-justify: inter-word;
   font-size: 120%;
 }
-.modal-body li{
+.modal-body li {
   font-family: "Courier New", Courier, monospace;
   font-weight: normal;
   font-size: 115%;
   text-transform: none;
 }
-.modal-body p{
+.modal-body p {
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
   font-size: 117%;
@@ -578,8 +598,8 @@ input:checked + .slider:before {
   text-decoration: none;
   cursor: pointer;
 }
-.boton-tutorial{
- position: fixed;
+.boton-tutorial {
+  position: fixed;
   bottom: 15px;
   left: 3px;
   z-index: 1;
