@@ -140,7 +140,14 @@ export default {
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents,
         locale: esLocale,
-
+        slotLabelFormat: [
+          {
+            hour: "numeric",
+            hour12: true,
+            meridiem: "short",
+           
+          } // top level of text
+        ],
         eventAdd: this.handleEventAdd,
         eventChange: this.handleEventChange,
         eventRemove: this.handleEventRemove
@@ -624,6 +631,4 @@ input:checked + .slider:before {
   background-color: #8458b3;
   color: white;
 }
- 
-
 </style>
