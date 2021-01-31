@@ -625,7 +625,5 @@ input:checked + .slider:before {
   color: white;
 }
  
-.dg-btn-loader .dg-circle {
-  background-color: green;
-}
+
 </style>
