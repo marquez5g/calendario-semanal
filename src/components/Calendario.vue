@@ -95,16 +95,21 @@
 </template>
 
 <script>
+import Vue from "vue";
 import esLocale from "@fullcalendar/core/locales/es";
 import FullCalendar, { formatDate } from "@fullcalendar/vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { createEventId, TURNO_MORNING } from "./event-utils";
+import VuejsDialog from "vuejs-dialog";
+import VuejsDialogMixin from "vuejs-dialog/dist/vuejs-dialog-mixin.min.js"; // only needed in custom components
+import "vuejs-dialog/dist/vuejs-dialog.min.css";
+
 var color = "#4dffb8";
 var titulo = "Disponible";
 var eventosFinales = [];
-
+Vue.use(VuejsDialog);
 export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
@@ -295,13 +300,18 @@ export default {
     },
 
     handleEventClick(clickInfo) {
-      if (
-        confirm(
-          `¿Seguro que quieres borrar el turno '${clickInfo.event.start}'?`
-        )
-      ) {
-        clickInfo.event.remove();
-      }
+      let options = {
+        okText: "Continuar",
+        cancelText: "Cancelar"
+      };
+      this.$dialog
+        .confirm("¿Seguro que quiere borrar este turno?", options)
+        .then(function() {
+          clickInfo.event.remove();
+        })
+        .catch(function() {
+          console.log("Clicked on cancel");
+        });
     },
 
     handleEvents(events) {
@@ -425,11 +435,13 @@ b {
   border-radius: 8px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.enviar-horario {
+.enviar-horario button {
   position: fixed;
   bottom: 15px;
   right: 3px;
   z-index: 1;
+  background-color: #fcf95d;
+  color: black;
 }
 .demo-app button:hover {
   background-color: #2e2936;
@@ -606,5 +618,14 @@ input:checked + .slider:before {
 }
 .fc-timegrid {
   z-index: 0;
+}
+.dg-btn {
+  border: none;
+  background-color: #8458b3;
+  color: white;
+}
+ 
+.dg-btn-loader .dg-circle {
+  background-color: green;
 }
 </style>
