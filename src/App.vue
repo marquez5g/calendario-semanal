@@ -27,13 +27,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #2b2929;
 }
 .header h1 {
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
   text-transform: uppercase;
-  color: azure;
+  color: #2b2929;
   margin: 0;
 }
 /* .header {

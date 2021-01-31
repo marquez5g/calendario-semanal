@@ -1,32 +1,31 @@
 <template>
   <div class="demo-app">
-    <div class="botones">
-      <div class="predeterminados">
-        
-
-        <label class="label-botones">Horarios predeterminados: </label>
-        <button @click="morning">Mañana</button>
-        <button @click="tarde">Tarde</button>
-        <button @click="noche">Noche</button>
-      </div>
-
-      <div class="toggle">
-        ¿Personalizar?
-
-        <label class="switch">
-          <input type="checkbox" v-on:click="isHidden = !isHidden" />
-          <span class="slider round"></span>
-        </label>
-      </div>
-      <div class="tipo-horario" v-if="!isHidden">
-        <label class="label-botones">Disponibilidad: </label>
-
-        <button @click="libre">Disponible</button>
-        <button @click="permiso">Permiso</button>
-        <button @click="vacaciones">Vacaciones</button>
-      </div>
+    <div class="enviar-horario">
+      <button @click="enviarHorario">Enviar horario</button>
+    </div>
+    <div class="predeterminados">
+      <label class="label-botones">Establecer semana por turnos </label>
+      <button @click="morning">Mañana</button>
+      <button @click="tarde">Tarde</button>
+      <button @click="noche">Noche</button>
     </div>
 
+    <div class="toggle">
+      Opciones manuales
+
+      <label class="switch">
+        <input type="checkbox" v-on:click="isHidden = !isHidden" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <div class="tipo-horario" v-if="!isHidden">
+      <label class="label-botones">Tipo de bloque </label>
+
+      <button @click="libre">Disponible</button>
+      <button @click="permiso">Permiso</button>
+      <button @click="vacaciones">Vacaciones</button>
+    </div>
     <div class="demo-app-main">
       <FullCalendar
         ref="fullCalendar"
@@ -50,7 +49,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { createEventId, TURNO_MORNING } from "./event-utils";
 var color = "#4dffb8";
-var titulo = "Libre";
+var titulo = "Disponible";
+var eventosFinales = [];
 
 export default {
   components: {
@@ -73,7 +73,6 @@ export default {
           right: "today prev,next",
         },
         initialView: "timeGridWeek",
-        // initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
         editable: true,
         selectable: true,
         selectMirror: true,
@@ -84,11 +83,9 @@ export default {
         eventsSet: this.handleEvents,
         locale: esLocale,
 
-        /* you can update a remote database when these fire:
-        eventAdd:
-        eventChange:
-        eventRemove:
-        */
+        eventAdd: this.handleEventAdd,
+        eventChange: this.handleEventChange,
+        eventRemove: this.handleEventRemove,
       },
       currentEvents: [],
     };
@@ -151,7 +148,7 @@ export default {
         });
         TURNO_MORNING.push({
           id: createEventId(),
-          title: "Libre",
+          title: "Disponible",
           start:
             year + "-" + month + "-" + formattedDay.toString() + "T11:00:00",
           end: year + "-" + month + "-" + formattedDay.toString() + "T20:00:00",
@@ -186,7 +183,7 @@ export default {
         });
         TURNO_MORNING.push({
           id: createEventId(),
-          title: "Libre",
+          title: "Disponible",
           start:
             year + "-" + month + "-" + formattedDay.toString() + "T14:00:00",
           end: year + "-" + month + "-" + formattedDay.toString() + "T23:00:00",
@@ -202,7 +199,7 @@ export default {
     },
     libre() {
       color = "#4dffb8";
-      titulo = "Libre";
+      titulo = "Disponible";
     },
     permiso() {
       color = "#ff884d";
@@ -248,6 +245,14 @@ export default {
     handleEvents(events) {
       this.currentEvents = events;
     },
+    handleEventAdd(addInfo) {
+      let calendarApi = this.$refs.fullCalendar.getApi();
+
+      eventosFinales.push(addInfo.event);
+    },
+    enviarHorario() {
+      console.log(eventosFinales);
+    },
   },
 };
 </script>
@@ -255,7 +260,7 @@ export default {
 <style lang='css'>
 body {
   font-family: "Courier New", Courier, monospace;
-  background: #00ace6;
+  background: #b3d4ffd3;
 }
 
 h1,
@@ -310,22 +315,33 @@ b {
   font-family: "Courier New", Courier, monospace;
   font-size: 14px;
   border-radius: 25px;
-  background: #ffffff;
+  /* background: #ffffff; */
   border-top: 100px;
   margin: 5px 100px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
   height: 1000px;
 }
 
 .demo-app-main {
-  /* flex-grow: 1; */
+  z-index: -1;
+  margin: 30px 20px;
+  color: black;
   padding: 3em;
   border-radius: 25px;
-  background: #ffffff;
+  background: white;
   border-top: 100px;
   border-bottom: 100px;
-  margin: 70px 100px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 8px 15px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.fc .fc-button-primary {
+  background-color: #001433;
+  color: #fff;
+  border-color: #001433;
+}
+.fc .fc-button-primary:hover {
+  background-color: #527a7a;
+  color: #fff;
+  border-color: #527a7a;
 }
 .demo-app button {
   display: inline-block;
@@ -335,17 +351,23 @@ b {
   text-align: center;
   text-decoration: none;
   outline: none;
-  color: #fff;
-  background-color: #2c3e50;
+  color: white;
+  background-color: #001433;
   border: none;
   border-radius: 8px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+.enviar-horario{
+  position: fixed;
+  bottom: 15px;
+  right: 3px;
+  z-index: 1;
+}
 .demo-app button:hover {
-  background-color: #233241;
+  background-color: #527a7a;
 }
 .demo-app button:active {
-  background-color: #233241;
+  background-color: #527a7a;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
   transform: translateY(4px);
@@ -355,24 +377,22 @@ b {
   max-width: 1100px;
   margin: 0 auto;
 }
-.botones {
-  display: flexbox;
-  /* border-radius: 25px;
-  background: #ffffff; */
-  height: 100px;
-  margin: 10px 100px;
-}
+
 .predeterminados {
   padding: 15px;
   text-align: left;
-  width: 65%;
-  margin: auto;
+  width: 80%;
+  margin-left: 250px;
 }
 .tipo-horario {
-  padding: 15px 15px;
   text-align: left;
-  width: 65%;
-  margin: auto;
+  position: sticky;
+  padding: 15px;
+  padding-bottom: 0;
+  width: 80%;
+  margin-left: 250px;
+  top: 0;
+  z-index: 1;
 }
 .predeterminados label {
   left: 0%;
@@ -383,8 +403,10 @@ b {
   font-size: 115%;
   text-transform: uppercase;
   text-align: left;
-  width: 65%;
-  margin: auto;
+  width: 80%;
+  padding: 15px;
+  line-height: 27.988px;
+  margin-left: 250px;
 }
 .switch {
   position: relative;
@@ -405,7 +427,7 @@ b {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #527a7a;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -423,11 +445,11 @@ b {
 }
 
 input:checked + .slider {
-  background-color: #2c3e50;
+  background-color: #001433;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2c3e50;
+  box-shadow: 0 0 1px #001433;
 }
 
 input:checked + .slider:before {
@@ -443,5 +465,4 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-
 </style>
