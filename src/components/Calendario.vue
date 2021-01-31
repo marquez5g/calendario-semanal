@@ -2,7 +2,9 @@
   <div class="demo-app">
     <div class="botones">
       <div class="predeterminados">
-        
+        <p>
+            Elige un horario predeterminado:
+        </p>        
 
         <label class="label-botones">Horarios predeterminados: </label>
         <button @click="morning">Mañana</button>
@@ -19,12 +21,13 @@
         </label>
       </div>
       <div class="tipo-horario" v-if="!isHidden">
-        <label class="label-botones">Disponibilidad: </label>
+        <label class="label-botones">Tipo de horario a crear: </label>
 
-        <button @click="libre">Disponible</button>
-        <button @click="permiso">Permiso</button>
-        <button @click="vacaciones">Vacaciones</button>
+        <button @click="libre; lastType = 'libre'" v-bind:class="{btnSelected: lastType == 'libre'}">Disponible</button>
+        <button @click="permiso; lastType = 'permiso'" :class="{btnSelected: lastType == 'permiso'}">Permiso</button>
+        <button @click="vacaciones; lastType = 'vacaciones'" :class="{btnSelected: lastType == 'vacaciones'}">Vacaciones</button>
       </div>
+      <p>Seleccionado: {{ lastType }}</p>
     </div>
 
     <div class="demo-app-main">
@@ -51,6 +54,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { createEventId, TURNO_MORNING } from "./event-utils";
 var color = "#4dffb8";
 var titulo = "Libre";
+var lastType = "libre";
 
 export default {
   components: {
@@ -60,6 +64,7 @@ export default {
   data: function () {
     return {
       isHidden: true,
+      lastType,
       calendarOptions: {
         plugins: [
           dayGridPlugin,
@@ -267,6 +272,7 @@ h6,
 ul,
 li,
 b,
+p,
 a {
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
@@ -359,7 +365,7 @@ b {
   display: flexbox;
   /* border-radius: 25px;
   background: #ffffff; */
-  height: 100px;
+  height: 200px;
   margin: 10px 100px;
 }
 .predeterminados {
@@ -442,6 +448,10 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.btnSelected {
+    background-color: #14416e !important;
 }
 
 </style>
