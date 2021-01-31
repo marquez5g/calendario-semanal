@@ -3,6 +3,40 @@
     <div class="enviar-horario">
       <button @click="enviarHorario">Enviar horario</button>
     </div>
+    <!-- Trigger/Open The Modal -->
+    <button id="myBtn" @click="tutorialOpen" class="boton-tutorial">Tutorial</button>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" @click="tutorialClose">&times;</span>
+          <h2>Instrucciones</h2>
+        </div>
+        <div class="modal-body">
+          <p>Ingrese una semana completa haciendo uso de los turnos predeterminados:</p>
+         
+          <ul>
+            <li>Mañana: ingresa disponibilidad de 7 AM a 11 AM de lunes a viernes.</li>
+            <li>Tarde: ingresa disponibilidad de 11 AM a 8 PM de lunes a viernes.</li>
+            <li>Noche: ingresa disponibilidad de 2 PM a 11 PM de lunes a viernes.</li>
+          </ul>
+          
+          <p>Active las opciones manuales para indicar permisos o vacaciones.</p>
+           
+           <ul>
+            <li>Seleccione el tipo de horario que desea ingresar haciendo clic en uno de los botones 
+              (DISPONIBLE, PERMISO, VACACIONES).</li>
+            <li>Haga clic y arrastre el mouse para pintar un día con un horario específico.</li>
+          </ul>
+          <p>Para borrar, haga clic sobre un turno creado.</p>
+          
+          <p>Al terminar de ingresar los turnos, haga clic en ENVIAR HORARIO.</p>
+        </div>
+        
+      </div>
+    </div>
     <div class="predeterminados">
       <label class="label-botones">Establecer semana por turnos </label>
       <button @click="morning">Mañana</button>
@@ -20,7 +54,7 @@
     </div>
 
     <div class="tipo-horario" v-if="!isHidden">
-      <label class="label-botones">Tipo de bloque </label>
+      <label class="label-botones">Tipo de turno </label>
 
       <button @click="libre">Disponible</button>
       <button @click="permiso">Permiso</button>
@@ -54,23 +88,23 @@ var eventosFinales = [];
 
 export default {
   components: {
-    FullCalendar, // make the <FullCalendar> tag available
+    FullCalendar // make the <FullCalendar> tag available
   },
 
-  data: function () {
+  data: function() {
     return {
       isHidden: true,
       calendarOptions: {
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
-          interactionPlugin, // needed for dateClick
+          interactionPlugin // needed for dateClick
         ],
 
         headerToolbar: {
           left: "title",
           center: "",
-          right: "today prev,next",
+          right: "today prev,next"
         },
         initialView: "timeGridWeek",
         editable: true,
@@ -85,13 +119,22 @@ export default {
 
         eventAdd: this.handleEventAdd,
         eventChange: this.handleEventChange,
-        eventRemove: this.handleEventRemove,
+        eventRemove: this.handleEventRemove
       },
-      currentEvents: [],
+      currentEvents: []
     };
   },
 
   methods: {
+    tutorialOpen() {
+      // Get the modal
+      let modal = document.getElementById("myModal");
+      modal.style.display = "block";
+    },
+    tutorialClose() {
+      let modal = document.getElementById("myModal");
+      modal.style.display = "none";
+    },
     morning() {
       let calendarApi = this.$refs.fullCalendar.getApi();
       let view = calendarApi.view;
@@ -99,7 +142,7 @@ export default {
       let fechaLunesFormatted = formatDate(fechaLunes, {
         month: "2-digit",
         year: "numeric",
-        day: "2-digit",
+        day: "2-digit"
       });
       let fechaLunesArray = fechaLunesFormatted.split("/");
       let year = fechaLunesArray[2];
@@ -109,7 +152,7 @@ export default {
         let day = parseInt(fechaLunesArray[1]) + i;
         let formattedDay = day.toLocaleString("es-CO", {
           minimumIntegerDigits: 2,
-          useGrouping: false,
+          useGrouping: false
         });
         TURNO_MORNING.push({
           id: createEventId(),
@@ -119,7 +162,7 @@ export default {
           end: year + "-" + month + "-" + formattedDay.toString() + "T16:00:00",
           backgroundColor: "#4dffb8",
           borderColor: "#4dffb8",
-          textColor: "black",
+          textColor: "black"
         });
       }
 
@@ -134,7 +177,7 @@ export default {
       let fechaLunesFormatted = formatDate(fechaLunes, {
         month: "2-digit",
         year: "numeric",
-        day: "2-digit",
+        day: "2-digit"
       });
       let fechaLunesArray = fechaLunesFormatted.split("/");
       let year = fechaLunesArray[2];
@@ -144,7 +187,7 @@ export default {
         let day = parseInt(fechaLunesArray[1]) + i;
         let formattedDay = day.toLocaleString("es-CO", {
           minimumIntegerDigits: 2,
-          useGrouping: false,
+          useGrouping: false
         });
         TURNO_MORNING.push({
           id: createEventId(),
@@ -154,7 +197,7 @@ export default {
           end: year + "-" + month + "-" + formattedDay.toString() + "T20:00:00",
           backgroundColor: "#4dffb8",
           borderColor: "#4dffb8",
-          textColor: "black",
+          textColor: "black"
         });
       }
 
@@ -169,7 +212,7 @@ export default {
       let fechaLunesFormatted = formatDate(fechaLunes, {
         month: "2-digit",
         year: "numeric",
-        day: "2-digit",
+        day: "2-digit"
       });
       let fechaLunesArray = fechaLunesFormatted.split("/");
       let year = fechaLunesArray[2];
@@ -179,7 +222,7 @@ export default {
         let day = parseInt(fechaLunesArray[1]) + i;
         let formattedDay = day.toLocaleString("es-CO", {
           minimumIntegerDigits: 2,
-          useGrouping: false,
+          useGrouping: false
         });
         TURNO_MORNING.push({
           id: createEventId(),
@@ -189,7 +232,7 @@ export default {
           end: year + "-" + month + "-" + formattedDay.toString() + "T23:00:00",
           backgroundColor: "#4dffb8",
           borderColor: "#4dffb8",
-          textColor: "black",
+          textColor: "black"
         });
       }
 
@@ -227,7 +270,7 @@ export default {
           allDay: selectInfo.allDay,
           backgroundColor: color,
           borderColor: color,
-          textColor: "black",
+          textColor: "black"
         });
       }
     },
@@ -246,21 +289,21 @@ export default {
       this.currentEvents = events;
     },
     handleEventAdd(addInfo) {
-      let calendarApi = this.$refs.fullCalendar.getApi();
-
       eventosFinales.push(addInfo.event);
     },
     enviarHorario() {
-      console.log(eventosFinales);
-    },
-  },
+      let calendarApi = this.$refs.fullCalendar.getApi();
+      let eventosActuales = calendarApi.getEvents();
+      console.log(eventosActuales);
+    }
+  }
 };
 </script>
 
-<style lang='css'>
+<style lang="css">
 body {
   font-family: "Courier New", Courier, monospace;
-  background: #b3d4ffd3;
+  background: #494D5F;
 }
 
 h1,
@@ -328,20 +371,26 @@ b {
   color: black;
   padding: 3em;
   border-radius: 25px;
-  background: white;
+  background: #e5eaf5;
   border-top: 100px;
   border-bottom: 100px;
   box-shadow: 0 8px 15px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
 .fc .fc-button-primary {
-  background-color: #001433;
+  background-color: #8458B3;
   color: #fff;
-  border-color: #001433;
+  border-color: #8458B3;
 }
 .fc .fc-button-primary:hover {
-  background-color: #527a7a;
+  background-color: #2e2936;
   color: #fff;
-  border-color: #527a7a;
+  border-color: #2e2936;
+}
+.fc .fc-button-primary:disabled{
+  background-color: #2e2936;
+  color: #fff;
+  border-color: #2e2936;
 }
 .demo-app button {
   display: inline-block;
@@ -352,22 +401,22 @@ b {
   text-decoration: none;
   outline: none;
   color: white;
-  background-color: #001433;
+  background-color: #8458B3;
   border: none;
   border-radius: 8px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.enviar-horario{
+.enviar-horario {
   position: fixed;
   bottom: 15px;
   right: 3px;
   z-index: 1;
 }
 .demo-app button:hover {
-  background-color: #527a7a;
+  background-color: #2e2936;
 }
 .demo-app button:active {
-  background-color: #527a7a;
+  background-color: #2e2936;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
   transform: translateY(4px);
@@ -383,16 +432,16 @@ b {
   text-align: left;
   width: 80%;
   margin-left: 250px;
+  color: white;
 }
 .tipo-horario {
   text-align: left;
-  position: sticky;
   padding: 15px;
   padding-bottom: 0;
   width: 80%;
   margin-left: 250px;
   top: 0;
-  z-index: 1;
+  color: white;
 }
 .predeterminados label {
   left: 0%;
@@ -407,6 +456,7 @@ b {
   padding: 15px;
   line-height: 27.988px;
   margin-left: 250px;
+  color: white;
 }
 .switch {
   position: relative;
@@ -427,7 +477,7 @@ b {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #527a7a;
+  background-color: #2e2936;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -445,11 +495,11 @@ b {
 }
 
 input:checked + .slider {
-  background-color: #001433;
+  background-color: #8458B3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #001433;
+  box-shadow: 0 0 1px #8458B3;
 }
 
 input:checked + .slider:before {
@@ -464,5 +514,77 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+   /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: none;
+  width: 50%; /* Could be more or less, depending on screen size */
+  border-radius: 8px;
+  box-shadow: 0 8px 15px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: justify;
+  text-justify: inter-word;
+  position: fixed;
+  left: 23%;
+  bottom: -15%;
+  
+}
+.modal-content h2{
+  text-align: center;
+  text-justify: inter-word;
+  font-size: 120%;
+}
+.modal-body li{
+  font-family: "Courier New", Courier, monospace;
+  font-weight: normal;
+  font-size: 115%;
+  text-transform: none;
+}
+.modal-body p{
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  font-size: 117%;
+  text-transform: none;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.boton-tutorial{
+ position: fixed;
+  bottom: 15px;
+  left: 3px;
+  z-index: 1;
+}
+.fc-timegrid {
+  z-index: 0;
 }
 </style>
